@@ -94,11 +94,18 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+
+  //Create tasks
   	taskCreateStatus = xTaskCreate(task1_handler, "Task-1", 200, "Hello world from task 1", 2, &task1_handle);
 	configASSERT(taskCreateStatus == pdPASS);
 
 	taskCreateStatus = xTaskCreate(task2_handler, "Task-2", 200, "Hello world from task 2", 2, &task2_handle);
 	configASSERT(taskCreateStatus == pdPASS);
+
+  //Schedule tasks
+	vTaskStartScheduler();
+
+
 
 
   /* USER CODE END 2 */
