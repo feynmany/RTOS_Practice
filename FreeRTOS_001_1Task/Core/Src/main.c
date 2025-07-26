@@ -38,7 +38,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define DWT_CTRL	(*(volatile uint32_t*)0xE0001000)
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -95,6 +95,13 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  //Enable the CYCCNT required by SysView
+  DWT_CTRL |= (1<<0);
+
+  //SysView configure and start
+  SEGGER_SYSVIEW_Conf();
+  SEGGER_SYSVIEW_Start();
+
   //Create tasks
   	taskCreateStatus = xTaskCreate(task1_handler, "Task-1", 200, "Hello world from task 1", 2, &task1_handle);
 	configASSERT(taskCreateStatus == pdPASS);
@@ -104,6 +111,8 @@ int main(void)
 
   //Schedule tasks
 	vTaskStartScheduler();
+
+
 
 
 
